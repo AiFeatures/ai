@@ -21,19 +21,19 @@ jobs:
     # workflows as before. For pull requests, head_branch is the source branch
     # and can also be named main or release-v* in a fork.
     if: >-
-      ${{
+      ${{ github.repository_owner == 'vercel' && (
         github.event.workflow_run.conclusion == 'failure' &&
         (
-          github.event.workflow_run.name != 'CI' ||
-          (
-            github.event.workflow_run.event == 'push' &&
-            (
-              github.event.workflow_run.head_branch == 'main' ||
-              startsWith(github.event.workflow_run.head_branch, 'release-v')
-            )
-          )
+        github.event.workflow_run.name != 'CI' ||
+        (
+        github.event.workflow_run.event == 'push' &&
+        (
+        github.event.workflow_run.head_branch == 'main' ||
+        startsWith(github.event.workflow_run.head_branch, 'release-v')
         )
-      }}
+        )
+        )
+      ) }}
 
     steps:
       - name: Detect expired Backport approval
